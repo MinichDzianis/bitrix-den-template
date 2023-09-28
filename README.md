@@ -1,23 +1,21 @@
-<PROJECT_NAME> Magento 2 Application
+<PROJECT_NAME> Bitrix Application
 ========================================================
 
 | Env | FrontURL | AdminURL |
 | --- | :------- | :------- |
-| DEV | https://app.exampleproject.test/  | https://app.exampleproject.test/backend/  |
-| STG | https://stage.exampleproject.com/ | https://stage.exampleproject.com/backend/ |
-| PRD | https://www.exampleproject.com/   | https://www.exampleproject.com/backend/   |
+| DEV | https://app.exampleproject.test/  | https://app.exampleproject.test/bitrix/  |
+| STG | https://stage.exampleproject.com/ | https://stage.exampleproject.com/bitrix/ |
+| PRD | https://www.exampleproject.com/   | https://www.exampleproject.com/bitrix/   |
 
 Other useful URLs on DEV:
 
-* https://mailhog.warden.test/
-* https://rabbitmq.exampleproject.test/
-* https://elasticsearch.exampleproject.test/
+* https://mailhog.den.test/
 
 ## Developer Setup
 
 ### Prerequisites:
 
-* [Warden](https://warden.dev/) 0.6.0 or later is installed. See the [Installing Warden](https://docs.warden.dev/installing.html) docs page for further info and procedures.
+* [Warden]([https://warden.dev/](https://swiftotter.github.io/den/index.html)) 1.0.0 or later is installed. See the [Installing Den]([https://docs.warden.dev/installing.html](https://swiftotter.github.io/den/installing.html)) docs page for further info and procedures.
 * `pv` is installed and available in your `$PATH` (you can install this via `brew`, `dnf`, `apt` etc)
 
 ### Initializing Environment
@@ -33,24 +31,9 @@ In the below examples `~/Sites/exampleproject` is used as the path. Simply repla
 
         cd ~/Sites/exampleproject
 
- 3. Configure composer credentials.
-
-        composer config -f ./webroot/composer.json http-basic.repo.magento.com <username> <password>
-
-     If you don't have `composer` installed on the host machine, manually create `webroot/auth.json` using the following template:
-
-        {
-            "http-basic": {
-                "repo.magento.com": {
-                    "username": "<username>",
-                    "password": "<password>"
-                }
-            }
-        }
-
  4. Run the init script to bootstrap the environment, starting the containers and mutagen sync (on macOS), installing the database (or importing if `--db-dump` is specified), and creating the local admin user for accessing the Magento backend.
 
-        warden bootstrap --clean-install
+        warden bootstrap
 
  5. Load the site in your browser using the links and credentials taken from the init script output. 
 
@@ -60,7 +43,7 @@ In the below examples `~/Sites/exampleproject` is used as the path. Simply repla
 
 ### Additional Configuration
 
-Information on configuring and using tools such as Xdebug, LiveReload, MFTF, and multi-domain site setups may be found in the Warden docs page on [Configuration](https://docs.warden.dev/configuration.html).
+Information on configuring and using tools such as Xdebug, LiveReload, MFTF, and multi-domain site setups may be found in the Warden docs page on [Configuration]([https://docs.warden.dev/configuration.html](https://swiftotter.github.io/den/configuration.html)).
 
 ### Destroying Environment
 
