@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+  php-fpm:
+    volumes:
+      - ./.warden/php/zz-config.ini:/usr/local/etc/php/conf.d/zz-config.ini
+  php-debug:
+    volumes:
+      - ./.warden/php/zz-config.ini:/usr/local/etc/php/conf.d/zz-config.ini
+  nginx:
+    volumes:
+      - ./.warden/nginx/custom.conf:/etc/nginx/default.d/custom.conf
+      - ./.warden/nginx/application.conf:/etc/nginx/available.d/application.conf
+      - ./.warden/nginx/default.conf:/etc/nginx/conf.d/default.conf

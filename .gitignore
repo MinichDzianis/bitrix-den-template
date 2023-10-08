@@ -8,21 +8,10 @@
 *.log
 *.sql.gz
 *.tar.gz
+*.tar.gz.*
 node_modules
 
 /webroot/*
-!/webroot/app
-/webroot/app/*
-!/webroot/app/etc
-/webroot/app/etc/*
-!/webroot/app/etc/config.php
-!/webroot/app/etc/env.php.warden.php
-!/webroot/app/etc/env.php.init.php
-
-!/webroot/patches
-!/webroot/modules
-!/webroot/composer.json
-!/webroot/composer.lock
-!/webroot/robots.txt
-!/webroot/Gruntfile.js
-!/webroot/package.json
+!/webroot/bitrix
+!/webroot/bitrix/.settings.php.init.php
+!/webroot/restore.php
