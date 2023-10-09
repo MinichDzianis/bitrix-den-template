@@ -18,6 +18,7 @@ cd "${WARDEN_ENV_PATH}"
 
 ## configure command defaults
 WARDEN_WEB_ROOT="$(echo "${WARDEN_WEB_ROOT:-/}" | sed 's#^/#./#')"
+WARDEN_ENV_NAME="$(echo "${WARDEN_ENV_NAME:-/}")"
 REQUIRED_FILES=("${WARDEN_WEB_ROOT}/restore.php")
 DB_DUMP="${DB_DUMP:-./backfill/magento-db.sql.gz}"
 DB_IMPORT=1
@@ -85,6 +86,10 @@ fi
 ## include check for DB_DUMP file only when database import is expected
 [[ ${DB_IMPORT} ]] && REQUIRED_FILES+=("${DB_DUMP}" "${WARDEN_WEB_ROOT}/app/etc/env.php.warden.php")
 
+##TMPLT=exampleproject
+##RPLC=${WARDEN_ENV_NAME}-db-1
+##sed -i -r "s/$TMPLT/$RPLC/g" ${WARDEN_WEB_ROOT}/restore.php
+
 :: Verifying configuration
 INIT_ERROR=
 
@@ -107,7 +112,11 @@ done
 ## exit script if there are any missing dependencies or configuration files
 [[ ${INIT_ERROR} ]] && exit 1
 
-cp backfill/*.tar.* ${WARDEN_WEB_ROOT}/
+if ls backfill/*.tar.* 1> /dev/null 2>&1; then
+  cp backfill/*.tar.* ${WARDEN_WEB_ROOT}/
+else
+  echo 'Backup files not found'
+fi
 
 :: Starting Warden
 den svc up
@@ -117,12 +126,12 @@ fi
 
 :: Initializing environment
 if [[ $AUTO_PULL ]]; then
-if [[ $AUTO_PULL ]]; then
   den env pull --ignore-pull-failures || true
   den env build --pull
 else
   den env build
 fi
+
 den env up -d
 
 ## wait for mariadb to start listening for connections
