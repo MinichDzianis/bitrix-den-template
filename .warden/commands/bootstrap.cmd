@@ -19,7 +19,8 @@ cd "${WARDEN_ENV_PATH}"
 ## configure command defaults
 WARDEN_WEB_ROOT="$(echo "${WARDEN_WEB_ROOT:-/}" | sed 's#^/#./#')"
 WARDEN_ENV_NAME="$(echo "${WARDEN_ENV_NAME:-/}")"
-REQUIRED_FILES=("${WARDEN_WEB_ROOT}/restore.php")
+REQUIRED_FILES=""
+##("${WARDEN_WEB_ROOT}/restore.php")
 DB_DUMP="${DB_DUMP:-./backfill/magento-db.sql.gz}"
 DB_IMPORT=1
 CLEAN_INSTALL=
@@ -34,7 +35,7 @@ URL_ADMIN="https://${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}/bitrix/"
 while (( "$#" )); do
     case "$1" in
         --clean-install)
-            REQUIRED_FILES+=("${WARDEN_WEB_ROOT}/bitrix/.settings.php.init.php")
+            ##REQUIRED_FILES+=("${WARDEN_WEB_ROOT}/bitrix/.settings.php.init.php")
             CLEAN_INSTALL=1
             DB_IMPORT=
             shift
@@ -78,7 +79,7 @@ done
 ## if no composer.json is present in web root imply --clean-install flag when not specified explicitly
 if [[ ! ${CLEAN_INSTALL} ]] && [[ ! -f "${WARDEN_WEB_ROOT}/composer.json" ]]; then
   warning "Implying --clean-install since file ${WARDEN_WEB_ROOT}/composer.json not present"
-  REQUIRED_FILES+=("${WARDEN_WEB_ROOT}/bitrix/.settings.php.init.php")
+  ##REQUIRED_FILES+=("${WARDEN_WEB_ROOT}/bitrix/.settings.php.init.php")
   CLEAN_INSTALL=1
   DB_IMPORT=
 fi
@@ -133,6 +134,8 @@ else
 fi
 
 den env up -d
+
+den env exec -- -T php-fpm wget https://www.1c-bitrix.ru/download/scripts/bitrixsetup.php
 
 ## wait for mariadb to start listening for connections
 den shell -c "while ! nc -z db 3306 </dev/null; do sleep 2; done"
