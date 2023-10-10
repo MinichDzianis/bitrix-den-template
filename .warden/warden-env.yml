@@ -1,5 +1,11 @@
 version: "3.5"
 services:
+  db:
+    environment:
+      MYSQL_DATABASE: bitrix
+      MYSQL_PASSWORD: bitrix
+      MYSQL_ROOT_PASSWORD: bitrix
+      MYSQL_USER: bitrix
   php-fpm:
     volumes:
       - ./.warden/php/zz-config.ini:/usr/local/etc/php/conf.d/zz-config.ini

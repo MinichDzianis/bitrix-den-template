@@ -22,6 +22,7 @@ WARDEN_ENV_NAME="$(echo "${WARDEN_ENV_NAME:-/}")"
 REQUIRED_FILES=""
 ##("${WARDEN_WEB_ROOT}/restore.php")
 DB_DUMP="${DB_DUMP:-./backfill/magento-db.sql.gz}"
+BACKUP_URL=""
 DB_IMPORT=1
 CLEAN_INSTALL=
 AUTO_PULL=1
@@ -70,6 +71,7 @@ while (( "$#" )); do
             shift
             ;;
         --load-backup)
+            shift
             BACKUP_URL="$1"
             shift
             ;;
@@ -139,12 +141,23 @@ fi
 
 den env up -d
 
+echo ${BACKUP_URL}
 if [[ ${BACKUP_URL} ]]; then
   :: Download backup
   den env exec -- -T php-fpm wget ${BACKUP_URL}
-elif [[ ${CLEAN_INSTALL} ]]; then
+fi
 
-den env exec -- -T php-fpm wget https://www.1c-bitrix.ru/download/scripts/bitrixsetup.php
+if ! [ -f ${WARDEN_WEB_ROOT}/bitrixsetup.php ]; then
+  den env exec -- -T php-fpm wget --no-check-certificate https://www.1c-bitrix.ru/download/scripts/bitrixsetup.php
+else
+  echo "bitrixsetup.php exists."
+fi
+
+if ! [ -f ${WARDEN_WEB_ROOT}/restore.php ]; then
+  den env exec -- -T php-fpm wget --no-check-certificate https://www.1c-bitrix.ru/download/scripts/restore.php
+else
+  echo "restore.php exists."
+fi
 
 ## wait for mariadb to start listening for connections
 den shell -c "while ! nc -z db 3306 </dev/null; do sleep 2; done"

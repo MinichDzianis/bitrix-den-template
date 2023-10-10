@@ -3,7 +3,7 @@
 
 WARDEN_USAGE=$(cat <<EOF
 \033[33mUsage:\033[0m
-  bootstrap [--skip-db-import] [--db-dump <file>.sql.gz]
+  bootstrap [--skip-db-import] [--db-dump <file>.sql.gz] [--load-backup <url>]
 
 \033[33mOptions:\033[0m
   -h, --help        Display this help menu
@@ -25,6 +25,8 @@ WARDEN_USAGE=$(cat <<EOF
 \033[33mArguments:\033[0m
 
   --db-dump <file>.sql.gz      expects path to .sql.gz file for import during init
+
+  --load-backup <url>          load backup by url
 
 EOF
 )

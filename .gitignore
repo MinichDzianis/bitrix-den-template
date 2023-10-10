@@ -14,4 +14,4 @@ node_modules
 /webroot/*
 !/webroot/bitrix
 !/webroot/bitrix/.settings.php.init.php
-!/webroot/restore.php
+!/webroot/index.html
