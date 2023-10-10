@@ -69,6 +69,10 @@ while (( "$#" )); do
             AUTO_PULL=
             shift
             ;;
+        --load-backup)
+            BACKUP_URL="$1"
+            shift
+            ;;
         *)
             error "Unrecognized argument '$1'"
             exit -1
@@ -134,6 +138,11 @@ else
 fi
 
 den env up -d
+
+if [[ ${BACKUP_URL} ]]; then
+  :: Download backup
+  den env exec -- -T php-fpm wget ${BACKUP_URL}
+elif [[ ${CLEAN_INSTALL} ]]; then
 
 den env exec -- -T php-fpm wget https://www.1c-bitrix.ru/download/scripts/bitrixsetup.php
 
