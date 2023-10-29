@@ -6,6 +6,7 @@ services:
       MYSQL_PASSWORD: bitrix
       MYSQL_ROOT_PASSWORD: bitrix
       MYSQL_USER: bitrix
+    command: mysqld --innodb_strict_mode="OFF" --character-set-server=utf8
   php-fpm:
     volumes:
       - ./.warden/php/zz-config.ini:/usr/local/etc/php/conf.d/zz-config.ini
