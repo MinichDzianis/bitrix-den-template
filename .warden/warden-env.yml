@@ -18,3 +18,7 @@ services:
       - ./.warden/nginx/custom.conf:/etc/nginx/default.d/custom.conf
       - ./.warden/nginx/application.conf:/etc/nginx/available.d/application.conf
       - ./.warden/nginx/default.conf:/etc/nginx/conf.d/default.conf
+  #if you want disabled service from parent compose file. rename my-job-scheduler like disabled service name
+  #my-job-scheduler:
+  #  command: echo "do nothing"
+  #  restart: "no"
