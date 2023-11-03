@@ -101,7 +101,7 @@ fi
 INIT_ERROR=
 
 ## verify warden version constraint
-WARDEN_VERSION=$(den version 2>/dev/null) || true
+WARDEN_VERSION=$(warden version 2>/dev/null) || true
 WARDEN_REQUIRE=in-dev
 if ! test $(version ${WARDEN_VERSION}) -ge $(version ${WARDEN_REQUIRE}); then
   error "Warden ${WARDEN_REQUIRE} or greater is required (version ${WARDEN_VERSION} is installed)"
@@ -126,38 +126,38 @@ else
 fi
 
 :: Starting Warden
-den svc up
+warden svc up
 if [[ ! -f ~/.warden/ssl/certs/${TRAEFIK_DOMAIN}.crt.pem ]]; then
-    den sign-certificate ${TRAEFIK_DOMAIN}
+    warden sign-certificate ${TRAEFIK_DOMAIN}
 fi
 
 :: Initializing environment
 if [[ $AUTO_PULL ]]; then
-  den env pull --ignore-pull-failures || true
-  den env build --pull
+  warden env pull --ignore-pull-failures || true
+  warden env build --pull
 else
-  den env build
+  warden env build
 fi
 
-den env up -d
+warden env up -d
 
 echo ${BACKUP_URL}
 if [[ ${BACKUP_URL} ]]; then
   :: Download backup
-  den env exec -- -T php-fpm wget ${BACKUP_URL}
+  warden env exec -- -T php-fpm wget ${BACKUP_URL}
 fi
 
 if ! [ -f ${WARDEN_WEB_ROOT}/bitrixsetup.php ]; then
-  den env exec -- -T php-fpm wget --no-check-certificate https://www.1c-bitrix.ru/download/scripts/bitrixsetup.php
+  warden env exec -- -T php-fpm wget --no-check-certificate https://www.1c-bitrix.ru/download/scripts/bitrixsetup.php
 else
   echo "bitrixsetup.php exists."
 fi
 
 if ! [ -f ${WARDEN_WEB_ROOT}/restore.php ]; then
-  den env exec -- -T php-fpm wget --no-check-certificate https://www.1c-bitrix.ru/download/scripts/restore.php
+  warden env exec -- -T php-fpm wget --no-check-certificate https://www.1c-bitrix.ru/download/scripts/restore.php
 else
   echo "restore.php exists."
 fi
 
 ## wait for mariadb to start listening for connections
-den shell -c "while ! nc -z db 3306 </dev/null; do sleep 2; done"
+warden shell -c "while ! nc -z db 3306 </dev/null; do sleep 2; done"
