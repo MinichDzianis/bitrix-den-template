@@ -9,10 +9,10 @@ services:
     command: mysqld --innodb_strict_mode="OFF" --character-set-server=utf8
   php-fpm:
     volumes:
-      - ./.warden/php/zz-config.ini:/usr/local/etc/php/conf.d/zz-config.ini
+      - ./.warden/php/zz-opcache-bitrix.ini:/etc/php.d/zz-opcache-bitrix.ini
   php-debug:
     volumes:
-      - ./.warden/php/zz-config.ini:/usr/local/etc/php/conf.d/zz-config.ini
+      - ./.warden/php/zz-opcache-bitrix.ini:/etc/php.d/zz-opcache-bitrix.ini
   nginx:
     volumes:
       - ./.warden/nginx/custom.conf:/etc/nginx/default.d/custom.conf
